@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scan Report</title>
+    <style>
+        :root { --bg: #030712; --card: #1f2937; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: white; padding: 2rem; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 700px; }
+
+        /* Verdict Colors */
+        .critical { --color: #ef4444; --bg-glow: rgba(239, 68, 68, 0.2); }
+        .warning { --color: #f59e0b; --bg-glow: rgba(245, 158, 11, 0.2); }
+        .safe { --color: #10b981; --bg-glow: rgba(16, 185, 129, 0.2); }
+
+        .report-card {
+            background: #111827; border: 1px solid #374151;
+            border-radius: 16px; overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+        
+        .header {
+            padding: 3rem; text-align: center;
+            background: radial-gradient(circle at center, var(--bg-glow), transparent 70%);
+            border-bottom: 1px solid #374151;
+        }
+        
+        .score-circle {
+            width: 120px; height: 120px; border-radius: 50%;
+            border: 8px solid var(--color);
+            margin: 0 auto 1.5rem;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; font-weight: 800; color: var(--color);
+            box-shadow: 0 0 20px var(--bg-glow);
+        }
+        
+        .verdict-text { font-size: 2rem; font-weight: 700; color: var(--color); text-transform: uppercase; letter-spacing: 2px; }
+        
+        .details { padding: 2rem; }
+        .meta-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid #374151; }
+        .meta-item label { display: block; color: #9ca3af; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+        .meta-item div { font-family: monospace; font-size: 1.1rem; color: #f3f4f6; }
+
+        .log-title { display: flex; align-items: center; gap: 10px; font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; }
+        .log { list-style: none; padding: 0; }
+        .log li {
+            background: rgba(31, 41, 55, 0.5);
+            padding: 1rem; margin-bottom: 0.8rem; border-radius: 8px;
+            border-left: 4px solid var(--color);
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        
+        .actions { padding: 2rem; text-align: center; background: #0f172a; border-top: 1px solid #374151; }
+        .btn { padding: 0.8rem 1.5rem; background: #374151; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: 0.2s; }
+        .btn:hover { background: #4b5563; }
+        .btn-primary { background: var(--color); color: #000; margin-right: 1rem; }
+        .btn-primary:hover { opacity: 0.9; background: var(--color); }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="report-card {{ risk }}">
+            <div class="header">
+                <div class="score-circle">{{ score }}</div>
+                <div class="verdict-text">{{ verdict }}</div>
+            </div>
+
+            <div class="details">
+                <div class="meta-grid">
+                    <div class="meta-item">
+                        <label>Sender Identity</label>
+                        <div>{{ sender }}</div>
+                    </div>
+                    <div class="meta-item">
+                        <label>Subject Line</label>
+                        <div>{{ subject }}</div>
+                    </div>
+                </div>
+
+                <div class="log-title">🛡️ Analysis Logs</div>
+                <ul class="log">
+                    {% for reason in reasons %}
+                        <li>{{ reason }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="actions">
+                <a href="/test-email" class="btn btn-primary">Scan Another</a>
+                <a href="/" class="btn">Dashboard</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

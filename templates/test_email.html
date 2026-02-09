@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analyzer</title>
+    <style>
+        :root { --bg: #030712; --card: #111827; --input: #1f2937; --primary: #6366f1; --text: #f9fafb; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 2rem; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 650px; }
+        
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        h1 { margin-top: 0; font-weight: 700; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #9ca3af; font-weight: 500; }
+        input, textarea {
+            width: 100%; padding: 0.85rem; margin-bottom: 1.5rem;
+            background: var(--input); border: 1px solid #374151;
+            color: white; border-radius: 8px; font-family: inherit;
+            box-sizing: border-box; transition: 0.2s;
+        }
+        input:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
+        textarea { height: 150px; resize: vertical; }
+
+        .btn {
+            width: 100%; padding: 1rem;
+            background: var(--primary); color: white; border: none;
+            border-radius: 8px; font-weight: 600; cursor: pointer;
+            font-size: 1rem; transition: 0.2s;
+        }
+        .btn:hover { background: #4f46e5; transform: translateY(-1px); }
+        .back { text-align: center; margin-top: 1.5rem; }
+        .back a { color: #6b7280; text-decoration: none; font-size: 0.9rem; }
+        .back a:hover { color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="glass-panel">
+            <h1>🔍 Header & Body Scanner</h1>
+            <p style="color: #6b7280; margin-bottom: 2rem;">Paste suspicious email data below for heuristic analysis.</p>
+            
+            <form action="/test-email" method="POST">
+                <label>SENDER (FROM Header)</label>
+                <input type="text" name="sender" placeholder="security@paypal-support-v2.com">
+                
+                <label>SUBJECT LINE</label>
+                <input type="text" name="subject" placeholder="Action Required: Account Suspended">
+                
+                <label>EMAIL BODY (Text content)</label>
+                <textarea name="body" placeholder="Paste the full email content here..."></textarea>
+                
+                <button type="submit" class="btn">Run Scan</button>
+            </form>
+            <div class="back"><a href="/">&larr; Return to Dashboard</a></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulation Report</title>
+    <style>
+        :root {
+            --bg: #030712;
+            --card-bg: #111827;
+            --border: #374151;
+            --text: #f3f4f6;
+            --muted: #9ca3af;
+            --primary: #6366f1;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* --- Score Header --- */
+        .score-panel {
+            text-align: center;
+            padding: 3rem;
+            background: radial-gradient(circle at center, #1e1b4b, transparent 70%);
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .score-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .score-label {
+            color: var(--muted);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0.5rem;
+        }
+
+        /* --- Result Cards --- */
+        .result-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .result-card:hover {
+            transform: translateY(-2px);
+            border-color: #4b5563;
+        }
+
+        /* Status Bar (Green/Red strip) */
+        .status-bar {
+            height: 6px;
+            width: 100%;
+        }
+        .status-correct { background: var(--success); box-shadow: 0 0 10px rgba(16, 185, 129, 0.4); }
+        .status-wrong { background: var(--danger); box-shadow: 0 0 10px rgba(239, 68, 68, 0.4); }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        .email-preview {
+            background: #030712;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-family: 'Segoe UI', monospace;
+            color: #d1d5db;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+        }
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        .badge-correct { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid var(--success); }
+        .badge-wrong { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid var(--danger); }
+
+        .explanation {
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            border-radius: 4px;
+            color: #a5b4fc;
+            line-height: 1.5;
+        }
+
+        .btn-group {
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .btn:hover { background: #4f46e5; box-shadow: 0 0 15px rgba(99, 102, 241, 0.4); }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            margin-left: 1rem;
+        }
+        .btn-outline:hover {
+            color: white;
+            border-color: white;
+            background: transparent;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="score-panel">
+            <h1 class="score-title">{{ score }} / {{ total }}</h1>
+            <div class="score-label">Final Security Score</div>
+        </div>
+
+        {% for r in results %}
+        <div class="result-card">
+            <div class="status-bar {{ 'status-correct' if r.is_correct else 'status-wrong' }}"></div>
+
+            <div class="card-content">
+                <div class="meta-row">
+                    <div>
+                        <span style="color: var(--muted); font-size: 0.9rem;">SCENARIO {{ loop.index }}</span>
+                    </div>
+                    <div>
+                        {% if r.is_correct %}
+                            <span class="badge badge-correct">Correct Decision</span>
+                        {% else %}
+                            <span class="badge badge-wrong">Incorrect Decision</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="email-preview"><strong>From:</strong> {{ r.message.sender }}<br><strong>Subject:</strong> {{ r.message.subject }}<br><br>{{ r.message.body }}</div>
+
+                <div style="display: flex; gap: 2rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <span style="color:var(--muted); font-size:0.8rem;">YOUR ANSWER</span><br>
+                        <strong style="color: {{ 'var(--success)' if r.user_ans == r.correct else 'var(--danger)' }}">{{ r.user_ans }}</strong>
+                    </div>
+                    <div>
+                        <span style="color:var(--muted); font-size:0.8rem;">CORRECT ANSWER</span><br>
+                        <strong>{{ r.correct }}</strong>
+                    </div>
+                </div>
+
+                <div class="explanation">
+                    <strong>💡 Intelligence Brief:</strong> {{ r.reason }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="btn-group">
+            <a href="/simulation" class="btn">Retake Simulation</a>
+            <a href="/" class="btn btn-outline">Back to Dashboard</a>
+        </div>
+    </div>
+
+</body>
+</html>
