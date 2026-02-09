@@ -416,6 +416,13 @@ class PhishingAnalyzer:
             return "Suspicious", "warning", final_score, self.reasons
         else:
             return "Safe", "safe", final_score, ["No strong phishing indicators found"]
+        
+# ================= HELPER =================
+
+def inject_tracking_links(body, email_id):
+    def replace(match):
+        return f'<a href="/click/{email_id}" style="color:#1a73e8;">{match.group(0)}</a>'
+    return re.sub(r'https?://[^\s]+', replace, body)
 
 # ==================================================
 # ROUTES (UNCHANGED)
@@ -474,6 +481,107 @@ def test_email():
         )
 
     return render_template('test_email.html')
+
+
+
+# ==================================================
+# NEW INTERACTIVE INBOX EXPERIENCE
+# ==================================================
+
+@app.route('/inbox')
+def inbox():
+    # show mixed inbox (random order)
+    emails = EMAILS_DB.copy()
+    random.shuffle(emails)
+    return render_template('inbox.html', emails=emails)
+
+
+@app.route('/email/<int:email_id>')
+def open_email(email_id):
+    email = next((e for e in EMAILS_DB if e['id'] == email_id), None)
+    if not email:
+        return "Email not found", 404
+
+    # 🔥 ADD TRAINING BEHAVIOR (DOES NOT MODIFY DB)
+    email_copy = email.copy()
+    email_copy["body"] = inject_tracking_links(email["body"], email["id"])
+
+    return render_template('email_view.html', email=email_copy)
+
+
+
+@app.route('/click/<int:email_id>')
+def click_link(email_id):
+    email = next((e for e in EMAILS_DB if e['id'] == email_id), None)
+    if not email:
+        return "Email not found", 404
+
+    if email['type'] == 'Phishing':
+        verdict = "You clicked a phishing link ❌"
+        risk = "critical"
+        score = -10
+        reasons = [
+            "The email impersonates a trusted brand",
+            "Urgent language was used to pressure you",
+            "The link does not belong to an official domain",
+            "Attackers rely on curiosity and fear"
+        ]
+    else:
+        verdict = "Safe interaction ✅"
+        risk = "safe"
+        score = 10
+        reasons = [
+            "The sender domain is legitimate",
+            "No malicious intent detected",
+            "This email matches normal business communication"
+        ]
+
+    return render_template(
+        'result_single.html',
+        verdict=verdict,
+        risk=risk,
+        score=score,
+        reasons=reasons,
+        sender=email['sender'],
+        subject=email['subject']
+    )
+
+
+@app.route('/report/<int:email_id>')
+def report_email(email_id):
+    email = next((e for e in EMAILS_DB if e['id'] == email_id), None)
+    if not email:
+        return "Email not found", 404
+
+    if email['type'] == 'Phishing':
+        verdict = "Correct Action Taken 🛡️"
+        risk = "safe"
+        score = 10
+        reasons = [
+            "You avoided clicking suspicious links",
+            "You reported the email instead of interacting",
+            "This helps security teams protect others",
+            "Reporting phishing is the best possible action"
+        ]
+    else:
+        verdict = "False Report ⚠️"
+        risk = "warning"
+        score = 0
+        reasons = [
+            "This email appears to be legitimate",
+            "Over-reporting can cause unnecessary alerts",
+            "However, caution is always better than risk"
+        ]
+
+    return render_template(
+        'result_single.html',
+        verdict=verdict,
+        risk=risk,
+        score=score,
+        reasons=reasons,
+        sender=email['sender'],
+        subject=email['subject']
+    )
 
 # ==================================================
 # RUN
