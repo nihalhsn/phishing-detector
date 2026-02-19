@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Training Feedback</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+    margin:0;
+    font-family:'Segoe UI', sans-serif;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.card {
+    background:white;
+    width:650px;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.4);
+    text-align:center;
+    position:relative;
+}
+
+.result-title {
+    font-size:22px;
+    font-weight:600;
+    margin-bottom:10px;
+}
+
+.score-change {
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+.positive { color:#16a34a; }
+.negative { color:#dc2626; }
+
+.training-box {
+    background:#f3f4f6;
+    padding:18px;
+    border-radius:12px;
+    text-align:left;
+    font-size:14px;
+    margin-bottom:20px;
+}
+
+.score-bar {
+    height:16px;
+    background:#e5e7eb;
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:15px;
+}
+
+.fill {
+    height:100%;
+    width:{{score}}%;
+    background:linear-gradient(90deg,#10b981,#3b82f6);
+    transition:width 0.6s ease;
+}
+
+.stats {
+    font-size:14px;
+    margin-bottom:15px;
+}
+
+.badges-box {
+    margin-top:15px;
+    padding:15px;
+    background:#f9fafb;
+    border-radius:10px;
+    font-size:13px;
+}
+
+button {
+    padding:12px 25px;
+    border:none;
+    border-radius:10px;
+    background:#3b82f6;
+    color:white;
+    cursor:pointer;
+    font-weight:500;
+    transition:0.2s;
+}
+
+button:hover {
+    background:#2563eb;
+}
+
+/* Modal */
+.modal {
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.7);
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content {
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    width:400px;
+}
+
+.reset-btn {
+    background:#ef4444;
+}
+
+.reset-btn:hover {
+    background:#dc2626;
+}
+
+.success-btn {
+    background:#16a34a;
+}
+
+.success-btn:hover {
+    background:#15803d;
+}
+
+@media (max-width:768px){
+    .card {
+        width:90%;
+        padding:25px;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+
+    <div class="result-title">{{result}}</div>
+
+    {% if score_change > 0 %}
+        <div class="score-change positive">+{{score_change}} Points</div>
+    {% elif score_change < 0 %}
+        <div class="score-change negative">{{score_change}} Points</div>
+    {% endif %}
+
+    <div class="training-box">
+        <strong>Training Insight:</strong><br><br>
+        {{training}}
+    </div>
+
+    <div class="score-bar">
+        <div class="fill"></div>
+    </div>
+
+    <div class="stats">
+        🎯 Total Score: <b>{{score}}</b><br>
+        🔥 Streak: <b>{{streak}}</b>
+    </div>
+
+    <div class="badges-box">
+        <strong>Unlocked Badges:</strong><br><br>
+        {% if badges|length == 0 %}
+            None yet
+        {% else %}
+            {% for badge in badges %}
+                🏅 {{badge}}<br>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <br>
+    <button onclick="location.href='/inbox'">
+        Continue Simulation
+    </button>
+
+</div>
+
+<!-- FAILURE MODAL -->
+{% if score == 0 %}
+<div class="modal" style="display:flex;">
+    <div class="modal-content">
+        <h2>🚨 Simulation Failed</h2>
+        <p>Your awareness level dropped to zero.</p>
+        <br>
+        <button class="reset-btn" onclick="location.href='/inbox'">
+            Restart Training
+        </button>
+    </div>
+</div>
+{% endif %}
+
+<!-- SUCCESS MODAL -->
+{% if score == 100 %}
+<div class="modal" style="display:flex;">
+    <div class="modal-content">
+        <h2>🏆 Perfect Score!</h2>
+        <p>You demonstrated excellent phishing awareness.</p>
+        <br>
+        <button class="success-btn" onclick="location.href='/inbox'">
+            Restart Simulation
+        </button>
+    </div>
+</div>
+{% endif %}
+
+</body>
+</html>

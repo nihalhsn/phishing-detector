@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+<style>
+body { font-family: Arial; padding:40px; }
+input, textarea, select { width:100%; margin-bottom:10px; padding:8px; }
+button { padding:10px 15px; }
+table { width:100%; margin-top:30px; border-collapse:collapse; }
+td, th { border:1px solid #ddd; padding:8px; }
+</style>
+</head>
+<body>
+<a href="/admin-logout">Logout</a>
+
+<h2>Add Email Template</h2>
+
+<h3>Bulk Import (JSON)</h3>
+
+<form action="/admin-import" method="POST" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".json" required>
+    <button type="submit">Upload JSON</button>
+</form>
+
+<form method="POST">
+    <select name="type">
+        <option value="Safe">Safe</option>
+        <option value="Phishing">Phishing</option>
+    </select>
+
+    <input name="sender" placeholder="Sender Email">
+    <input name="subject" placeholder="Subject">
+    <textarea name="body" rows="6" placeholder="Email Body"></textarea>
+    <input name="attachment" placeholder="Attachment (optional)">
+    <select name="severity">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+    </select>
+
+    <button type="submit">Add Email</button>
+</form>
+
+<h2>Existing Emails</h2>
+
+<table>
+<tr>
+    <th>ID</th>
+    <th>Type</th>
+    <th>Sender</th>
+    <th>Subject</th>
+    <th>Action</th>
+</tr>
+
+{% for email in emails %}
+<tr>
+    <td>{{ email[0] }}</td>
+    <td>{{ email[1] }}</td>
+    <td>{{ email[2] }}</td>
+    <td>{{ email[3] }}</td>
+    <td>
+        <a href="/admin-delete/{{ email[0] }}"
+           onclick="return confirm('Delete this email?')"
+           style="color:red;">
+           Delete
+        </a>
+    </td>
+</tr>
+{% endfor %}
+
+</table>
+
+
+</body>
+</html>
