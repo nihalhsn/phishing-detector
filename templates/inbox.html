@@ -1,166 +1,349 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Inbox</title>
+<title>Inbox - Phishing Simulator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-/* RESET */
-* {
-    box-sizing: border-box;
-    font-family: "Google Sans", Roboto, Arial, sans-serif;
-}
-
 body {
-    margin: 0;
-    background: #f6f8fc;
-    color: #202124;
+    margin:0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background:#f6f8fc;
 }
 
-/* TOP BAR */
+/* Top Bar */
 .topbar {
-    height: 64px;
-    background: #ffffff;
-    border-bottom: 1px solid #dadce0;
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    gap: 16px;
+    height:64px;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    box-shadow:0 1px 5px rgba(0,0,0,0.08);
+    position:sticky;
+    top:0;
+    z-index:10;
 }
 
 .logo {
-    font-size: 22px;
-    font-weight: 500;
+    font-weight:600;
+    font-size:18px;
+    color:#202124;
 }
 
-.home-btn {
-    margin-left: auto;
-    text-decoration: none;
-    font-size: 14px;
-    color: #1a73e8;
+.search-box input {
+    width:400px;
+    padding:8px 15px;
+    border-radius:20px;
+    border:1px solid #dadce0;
+    background:#f1f3f4;
+    outline:none;
 }
 
-/* LAYOUT */
-.layout {
-    display: flex;
-    height: calc(100vh - 64px);
+/* Layout */
+.container {
+    display:flex;
 }
 
-/* SIDEBAR */
+/* Sidebar */
 .sidebar {
-    width: 240px;
-    background: #ffffff;
-    border-right: 1px solid #dadce0;
-    padding: 12px;
+    width:250px;
+    background:white;
+    min-height:calc(100vh - 64px);
+    padding:20px;
+    border-right:1px solid #e0e0e0;
 }
 
-.sidebar-item {
-    padding: 10px 16px;
-    border-radius: 999px;
-    font-size: 14px;
-    cursor: pointer;
+.sidebar a {
+    display:block;
+    padding:10px;
+    border-radius:20px;
+    margin-bottom:5px;
+    text-decoration:none;
+    color:#202124;
+    font-size:14px;
 }
 
-.sidebar-item.active {
-    background: #d3e3fd;
-    font-weight: 500;
+.sidebar a:hover {
+    background:#f1f3f4;
 }
 
-/* MAIL LIST */
-.mail-list {
-    flex: 1;
-    background: #ffffff;
+.sidebar .active {
+    background:#e8f0fe;
+    font-weight:600;
 }
 
-.mail-row {
-    display: grid;
-    grid-template-columns: 240px auto 100px;
-    padding: 12px 16px;
-    border-bottom: 1px solid #f1f3f4;
-    cursor: pointer;
-    transition: background 0.15s ease;
+/* Main */
+.main {
+    flex:1;
+    padding:20px;
 }
 
-.mail-row:hover {
-    background: #f5f7fa;
+/* Stats Bar */
+.stats {
+    background:white;
+    padding:12px 20px;
+    border-radius:8px;
+    margin-bottom:15px;
+    box-shadow:0 1px 4px rgba(0,0,0,0.05);
+    font-size:14px;
+}
+
+/* Email Row (Gmail Style) */
+.email-row {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 15px;
+    background:white;
+    border-bottom:1px solid #eceff1;
+    cursor:pointer;
+    transition:background 0.2s;
+}
+
+.email-row:hover {
+    background:#f1f3f4;
+}
+
+.email-left {
+    display:flex;
+    align-items:center;
+    flex:1;
+}
+
+.avatar {
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:#1a73e8;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:600;
+    margin-right:12px;
 }
 
 .sender {
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-weight:600;
+    color:#202124;
+    width:220px;
 }
 
-.content {
-    overflow: hidden;
+.subject-preview {
+    color:#5f6368;
+    font-size:14px;
+    flex:1;
 }
 
-.subject {
-    font-weight: 500;
+.severity {
+    font-size:12px;
+    padding:4px 10px;
+    border-radius:20px;
 }
 
-.preview {
-    font-size: 14px;
-    color: #5f6368;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.Low { background:#e0f2fe; color:#0369a1; }
+.Medium { background:#fef3c7; color:#92400e; }
+.High { background:#fee2e2; color:#991b1b; }
+
+/* Badges */
+.badge-box {
+    margin-top:20px;
+    padding:10px;
+    background:#f8f9fa;
+    border-radius:10px;
+    font-size:13px;
 }
 
-.time {
-    text-align: right;
-    font-size: 13px;
-    color: #5f6368;
+/* Responsive */
+@media (max-width:900px) {
+    .search-box input {
+        width:200px;
+    }
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
+@media (max-width:768px) {
+    .container {
+        flex-direction:column;
+    }
+
+    .sidebar {
+        width:100%;
+        border-right:none;
+        border-bottom:1px solid #e0e0e0;
+    }
+
+    .email-row {
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .sender {
+        width:auto;
+    }
 }
 </style>
 </head>
-
 <body>
 
-<!-- TOP BAR -->
+<!-- Top Bar -->
 <div class="topbar">
-    <div class="logo">📧 Inbox</div>
-    <a href="/" class="home-btn">🏠 Home</a>
+    <div class="logo">Phishing Simulator</div>
+    <div class="search-box">
+        <input type="text" placeholder="Search mail (UI only)">
+    </div>
 </div>
 
-<!-- MAIN LAYOUT -->
-<div class="layout">
+<div class="container">
 
-    <!-- SIDEBAR -->
+    <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-item active">📥 Inbox</div>
-        <div class="sidebar-item">⭐ Starred</div>
-        <div class="sidebar-item">🕒 Snoozed</div>
-        <div class="sidebar-item">🗑️ Trash</div>
+        <a href="/inbox" class="active">📥 Inbox</a>
+        <a href="/trash">🗑 Trash</a>
+        <a href="/daily">🎯 Daily Challenge</a>
+        <a href="/toggle_timer">
+            ⏱ Timer Mode:
+            {% if timer %} ON {% else %} OFF {% endif %}
+        </a>
+        <a href="/reset" style="color:red;">🔄 Reset Training</a>
+
+
+        <div class="badge-box">
+            <strong>Badges</strong><br><br>
+            {% if badges|length == 0 %}
+                None yet
+            {% else %}
+                {% for badge in badges %}
+                    🏅 {{badge}}<br>
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
 
-    <!-- MAIL LIST -->
-    <div class="mail-list">
+    <!-- Main Area -->
+    <div class="main">
+
+        <div class="stats">
+            🎯 Score: <strong>{{score}}</strong>
+            &nbsp;&nbsp;🔥 Streak: <strong>{{streak}}</strong>
+        </div>
+
         {% for email in emails %}
-        <a href="/email/{{ email.id }}">
-            <div class="mail-row">
+        <div class="email-row" onclick="location.href='/email/{{email.id}}'">
+            <div class="email-left">
+                <div class="avatar">
+                    {{ email.sender[0] }}
+                </div>
+
                 <div class="sender">
-                    {{ email.sender.split('<')[0] }}
+                    {{email.sender}}
                 </div>
-                <div class="content">
-                    <div class="subject">{{ email.subject }}</div>
-                    <div class="preview">
-                        {{ email.body[:90].replace('\n',' ') }}…
-                    </div>
+
+                <div class="subject-preview">
+                    {{email.subject}}
                 </div>
-                <div class="time">Now</div>
             </div>
-        </a>
+
+            <div class="severity {{email.severity}}">
+                {{email.severity}}
+            </div>
+        </div>
         {% endfor %}
+
     </div>
 
 </div>
+
+<div id="email-toast" class="toast">
+    📧 New urgent email received! Click to open.
+</div>
+
+<style>
+.toast {
+    position: fixed;
+    top: 20px;
+    right: -400px;
+    background: #1a73e8;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    font-weight: 500;
+    transition: right 0.5s ease;
+    z-index: 9999;
+    cursor: pointer;
+}
+.toast.show {
+    right: 20px;
+}
+</style>
+
+<script>
+const toast = document.getElementById("email-toast");
+let latestEmailId = null;
+
+function showToast(emailId) {
+    latestEmailId = emailId;
+    toast.classList.add("show");
+
+    toast.onclick = function() {
+        window.location.href = "/email/" + latestEmailId;
+    };
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 6000);
+}
+
+function insertEmail(email) {
+    const main = document.querySelector(".main");
+
+    const row = document.createElement("div");
+    row.className = "email-row";
+    row.onclick = function() {
+        window.location.href = "/email/" + email.id;
+    };
+
+    row.innerHTML = `
+        <div class="email-left">
+            <div class="avatar">${email.sender[0]}</div>
+            <div class="sender">${email.sender}</div>
+            <div class="subject-preview">${email.subject}</div>
+        </div>
+        <div class="severity ${email.severity}">
+            ${email.severity}
+        </div>
+    `;
+
+    main.insertBefore(row, main.children[1]);
+}
+
+function triggerNewEmail() {
+    fetch("/new_email")
+        .then(response => response.json())
+        .then(data => {
+            insertEmail(data);
+            showToast(data.id);
+        });
+}
+
+function startInjection() {
+    setTimeout(() => {
+        triggerNewEmail();
+
+        setInterval(() => {
+            let randomDelay = Math.floor(Math.random() * 20000) + 10000;
+            setTimeout(triggerNewEmail, randomDelay);
+        }, 30000);
+
+    }, 5000);
+}
+
+startInjection();
+</script>
+
+
+
 
 </body>
 </html>
