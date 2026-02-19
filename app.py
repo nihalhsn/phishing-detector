@@ -6,8 +6,28 @@ from datetime import date
 import json
 from flask import Flask, render_template, session, redirect, url_for, jsonify, request
 
+def init_db():
+    conn = sqlite3.connect("database.db")
+    c = conn.cursor()
+
+    c.execute("""
+        CREATE TABLE IF NOT EXISTS emails (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            type TEXT,
+            sender TEXT,
+            subject TEXT,
+            body TEXT,
+            attachment TEXT,
+            severity TEXT
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
 ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "supersecure123"   # Change this to anything you want
+ADMIN_PASSWORD = "nihal123"
 
 
 app = Flask(__name__)
@@ -91,8 +111,12 @@ def fetch_random_email(email_type):
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
 
-    c.execute("SELECT * FROM emails WHERE type=?", (email_type,))
-    rows = c.fetchall()
+    try:
+        c.execute("SELECT * FROM emails WHERE type=?", (email_type,))
+        rows = c.fetchall()
+    except:
+        conn.close()
+        return None
 
     conn.close()
 
@@ -110,6 +134,7 @@ def fetch_random_email(email_type):
         "attachment": row[5],
         "severity": row[6]
     }
+
 
 
 
@@ -231,7 +256,7 @@ def admin_import():
 
 @app.route("/")
 def intro():
-    return render_template("intro.html")
+    return render_template("index.html")
 
 
 @app.route("/toggle_timer")
@@ -394,11 +419,9 @@ def admin_delete(email_id):
 
 
 
+init_db()
 
 if __name__ == "__main__":
-    app.run(debug=True)
-
-if __name__ == "__main__":
-    init_db()
     app.run(debug=True, use_reloader=False)
+
 
