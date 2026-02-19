@@ -1,0 +1,169 @@
+[
+  {
+    "type": "Safe",
+    "sender": "alerts@bank.com",
+    "subject": "Transaction Confirmation",
+    "body": "A debit of ₹2,450 was processed from your account.\n\nView details securely:\nhttps://bank.com/transactions\n\nIf this was not you, contact support immediately.",
+    "attachment": null,
+    "severity": "Medium"
+  },
+  {
+    "type": "Safe",
+    "sender": "noreply@google.com",
+    "subject": "New Sign-in from Chrome",
+    "body": "We detected a sign-in from Chrome on Windows.\n\nReview activity:\nhttps://accounts.google.com/security\n\nIf this was you, no action is required.",
+    "attachment": null,
+    "severity": "Medium"
+  },
+  {
+    "type": "Safe",
+    "sender": "support@amazon.com",
+    "subject": "Order Shipped",
+    "body": "Your order #45721 has been shipped.\n\nTrack your package:\nhttps://amazon.com/your-orders\n\nThank you for shopping with us.",
+    "attachment": null,
+    "severity": "Low"
+  },
+  {
+    "type": "Safe",
+    "sender": "notifications@linkedin.com",
+    "subject": "New Connection Request",
+    "body": "You have a new connection request.\n\nView profile:\nhttps://linkedin.com/notifications\n\nStay connected!",
+    "attachment": null,
+    "severity": "Low"
+  },
+
+  {
+    "type": "Phishing",
+    "sender": "security@bank-secure-alert.com",
+    "subject": "Urgent: Account Suspended",
+    "body": "Your bank account has been restricted due to unusual activity.\n\nVerify immediately:\nhttps://bank-secure-alert.com/login\n\nFailure to act within 24 hours will suspend your account permanently.",
+    "attachment": null,
+    "severity": "High"
+  },
+  {
+    "type": "Phishing",
+    "sender": "support@amaz0n-billing.net",
+    "subject": "Payment Failed",
+    "body": "We could not process your payment.\n\nUpdate your billing details here:\nhttps://amaz0n-billing.net/update\n\nYour account will be suspended if unresolved.",
+    "attachment": null,
+    "severity": "High"
+  },
+  {
+    "type": "Phishing",
+    "sender": "it-support@company-secure.co",
+    "subject": "Mailbox Storage Full",
+    "body": "Your mailbox has exceeded storage limits.\n\nUpgrade now:\nhttps://company-secure.co/upgrade\n\nAvoid email disruption.",
+    "attachment": null,
+    "severity": "Medium"
+  },
+  {
+    "type": "Phishing",
+    "sender": "security@m1crosoft-alert.com",
+    "subject": "Password Expiry Warning",
+    "body": "Your Microsoft password expires today.\n\nReset now:\nhttps://m1crosoft-alert.com/reset\n\nIT Security Team",
+    "attachment": null,
+    "severity": "High"
+  },
+
+  {
+    "type": "Safe",
+    "sender": "hr@company.com",
+    "subject": "Policy Update",
+    "body": "Please review the updated HR policies.\n\nAccess portal:\nhttps://company.com/hr-portal\n\nComplete before Friday.",
+    "attachment": null,
+    "severity": "Medium"
+  },
+  {
+    "type": "Safe",
+    "sender": "alerts@bank.com",
+    "subject": "Monthly Statement Ready",
+    "body": "Your monthly statement is now available.\n\nDownload securely:\nhttps://bank.com/statements\n\nThank you for banking with us.",
+    "attachment": null,
+    "severity": "Low"
+  },
+
+  {
+    "type": "Phishing",
+    "sender": "ceo@company-secure-mail.com",
+    "subject": "Urgent Wire Transfer",
+    "body": "I need you to process a confidential wire transfer immediately.\n\nRespond urgently.\n\nCEO",
+    "attachment": null,
+    "severity": "High"
+  },
+  {
+    "type": "Phishing",
+    "sender": "finance@company-payroll.co",
+    "subject": "Payroll Update Required",
+    "body": "Review payroll adjustments here:\nhttps://company-payroll.co/login\n\nSubmit before end of day.",
+    "attachment": "salary_update.xlsm",
+    "severity": "High"
+  },
+
+  {
+    "type": "Safe",
+    "sender": "support@apple.com",
+    "subject": "Apple ID Receipt",
+    "body": "Thank you for your recent purchase.\n\nView receipt:\nhttps://apple.com/account\n\nIf this was not you, contact support.",
+    "attachment": null,
+    "severity": "Medium"
+  },
+  {
+    "type": "Safe",
+    "sender": "no-reply@facebook.com",
+    "subject": "New Login Alert",
+    "body": "New login detected.\n\nCheck activity:\nhttps://facebook.com/security\n\nIf this wasn't you, secure your account.",
+    "attachment": null,
+    "severity": "Medium"
+  },
+
+  {
+    "type": "Phishing",
+    "sender": "support@paypal-verification.info",
+    "subject": "Account Limited",
+    "body": "Your PayPal account is limited.\n\nRestore access:\nhttps://paypal-verification.info/confirm\n\nImmediate action required.",
+    "attachment": null,
+    "severity": "High"
+  },
+  {
+    "type": "Phishing",
+    "sender": "admin@dropbox-secure.co",
+    "subject": "Shared Document",
+    "body": "You have received a secure document.\n\nView here:\nhttps://dropbox-secure.co/view\n\nDownload immediately.",
+    "attachment": "document.docm",
+    "severity": "High"
+  },
+
+  {
+    "type": "Safe",
+    "sender": "billing@netflix.com",
+    "subject": "Subscription Renewed",
+    "body": "Your subscription has been renewed successfully.\n\nManage account:\nhttps://netflix.com/account\n\nEnjoy streaming!",
+    "attachment": null,
+    "severity": "Low"
+  },
+  {
+    "type": "Safe",
+    "sender": "support@spotify.com",
+    "subject": "New Login",
+    "body": "New login to your Spotify account.\n\nReview activity:\nhttps://spotify.com/account\n\nThanks for listening.",
+    "attachment": null,
+    "severity": "Low"
+  },
+
+  {
+    "type": "Phishing",
+    "sender": "admin@google-security-alert.xyz",
+    "subject": "Security Breach",
+    "body": "Suspicious activity detected.\n\nSecure account:\nhttps://google-security-alert.xyz/verify\n\nAct immediately.",
+    "attachment": null,
+    "severity": "High"
+  },
+  {
+    "type": "Phishing",
+    "sender": "alerts@linkedin-alerts.info",
+    "subject": "Profile Restricted",
+    "body": "Your LinkedIn profile has been flagged.\n\nAppeal here:\nhttps://linkedin-alerts.info/appeal\n\nFailure to comply may result in suspension.",
+    "attachment": null,
+    "severity": "Medium"
+  }
+]
