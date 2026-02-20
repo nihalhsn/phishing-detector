@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Email View</title>
+<title>Email</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -12,156 +12,77 @@ body {
 }
 
 .container {
-    max-width:800px;
-    margin:40px auto;
-    background:white;
-    padding:30px;
-    border-radius:12px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+    padding:20px;
 }
 
-.header {
-    border-bottom:1px solid #e5e7eb;
-    padding-bottom:15px;
+.card {
+    background:white;
+    padding:25px;
+    border-radius:12px;
+}
+
+.subject {
+    font-size:18px;
+    font-weight:600;
+    margin-bottom:5px;
+}
+
+.sender {
+    font-size:14px;
+    color:#6b7280;
     margin-bottom:20px;
 }
 
-.email-body {
+.body {
     white-space:pre-line;
+    margin-bottom:20px;
 }
 
 button {
-    padding:10px 15px;
-    margin:5px;
+    width:100%;
+    padding:12px;
+    margin:8px 0;
     border:none;
     border-radius:8px;
+    font-size:15px;
     cursor:pointer;
 }
 
 .reply { background:#10b981; color:white; }
 .report { background:#ef4444; color:white; }
-.download { background:#f59e0b; color:white; }
+.back { background:#3b82f6; color:white; }
 
-.timer {
-    color:red;
-    font-weight:600;
-    margin-bottom:15px;
-}
 </style>
 </head>
 <body>
 
 <div class="container">
+    <div class="card">
 
-    {% if timer %}
-    <div class="timer">
-        ⏳ Time Remaining: <span id="countdown">30</span>s
-    </div>
-    {% endif %}
+        <div class="subject">{{email.subject}}</div>
+        <div class="sender">From: {{email.sender}}</div>
 
-    <div class="header">
-        <h2>{{email.subject}}</h2>
-        <div>From: {{email.sender}}</div>
-    </div>
+        <div class="body">
+            {{email.body | safe}}
+        </div>
 
-    <div class="email-body">
-        {{email.body | safe}}
-    </div>
-
-    {% if email.attachment %}
-        <button class="download"
-            onclick="location.href='/action/{{email.id}}/download'">
-            Download Attachment
+        <button class="reply"
+            onclick="location.href='/action/{{email.id}}/reply'">
+            Reply
         </button>
-    {% endif %}
 
-    <br><br>
+        <button class="report"
+            onclick="location.href='/action/{{email.id}}/report'">
+            Report Phishing
+        </button>
 
-    <button class="reply"
-        onclick="location.href='/action/{{email.id}}/reply'">
-        Reply
-    </button>
+        <button class="back"
+            onclick="location.href='/inbox'">
+            Back to Inbox
+        </button>
 
-    <button class="report"
-        onclick="location.href='/action/{{email.id}}/report'">
-        Report Phishing
-    </button>
-
-    <button onclick="location.href='/inbox'">
-        Back
-    </button>
-
+    </div>
 </div>
-
-{% if timer %}
-<script>
-let time = 30;
-let interval = setInterval(function(){
-    time--;
-    document.getElementById("countdown").innerText = time;
-    if(time <= 0){
-        clearInterval(interval);
-        window.location.href = "/action/{{email.id}}/reply";
-    }
-},1000);
-</script>
-{% endif %}
-
-<!-- Slide-in Notification -->
-<div id="email-toast" class="toast">
-    📧 New urgent email received! Click to open.
-</div>
-
-<style>
-.toast {
-    position: fixed;
-    top: 20px;
-    right: -400px;
-    background: #1a73e8;
-    color: white;
-    padding: 16px 24px;
-    border-radius: 12px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-    font-weight: 500;
-    transition: right 0.5s ease;
-    z-index: 9999;
-    cursor: pointer;
-}
-.toast.show {
-    right: 20px;
-}
-</style>
-
-<script>
-const toast = document.getElementById("email-toast");
-let latestEmailId = null;
-
-function showToast(emailId) {
-    latestEmailId = emailId;
-    toast.classList.add("show");
-
-    toast.onclick = function() {
-        window.location.href = "/email/" + latestEmailId;
-    };
-
-    setTimeout(() => {
-        toast.classList.remove("show");
-    }, 6000);
-}
-
-function triggerNewEmail() {
-    fetch("/new_email")
-        .then(response => response.json())
-        .then(data => {
-            showToast(data.id);
-        });
-}
-
-setInterval(() => {
-    triggerNewEmail();
-}, 20000);
-</script>
-
 
 </body>
 </html>

@@ -1,24 +1,173 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Phishing Training Simulator</title>
+<title>Inbox Phishing Simulator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
-body {font-family:Arial; background:linear-gradient(135deg,#1f2937,#111827); color:white; display:flex; justify-content:center; align-items:center; height:100vh;}
-.container {max-width:700px; text-align:center;}
-button {padding:12px 25px; background:#3b82f6; border:none; color:white; font-size:16px; border-radius:6px; cursor:pointer;}
-button:hover {background:#2563eb;}
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg,#0f172a,#020617);
+    color:white;
+    overflow-x:hidden;
+}
+
+/* HERO */
+.hero {
+    text-align:center;
+    padding:100px 20px 80px 20px;
+}
+
+.hero h1 {
+    font-size:42px;
+    margin-bottom:20px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.hero p {
+    max-width:700px;
+    margin:auto;
+    color:#94a3b8;
+    font-size:16px;
+    line-height:1.6;
+}
+
+.start-btn {
+    margin-top:40px;
+    padding:14px 40px;
+    font-size:16px;
+    border:none;
+    border-radius:30px;
+    background:#0ea5e9;
+    color:white;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.start-btn:hover {
+    background:#0284c7;
+    transform:scale(1.05);
+}
+
+/* FEATURES */
+.features {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+    padding:60px 20px;
+}
+
+.card {
+    background:#1e293b;
+    padding:30px;
+    border-radius:15px;
+    transition:0.3s;
+}
+
+.card:hover {
+    background:#334155;
+    transform:translateY(-5px);
+}
+
+.card h3 {
+    margin-bottom:10px;
+}
+
+.card p {
+    color:#94a3b8;
+    font-size:14px;
+}
+
+/* HOW IT WORKS */
+.steps {
+    text-align:center;
+    padding:60px 20px;
+}
+
+.steps h2 {
+    margin-bottom:20px;
+}
+
+.step {
+    margin:12px 0;
+    color:#cbd5e1;
+}
+
+/* FOOTER */
+.footer {
+    text-align:center;
+    padding:40px;
+    color:#64748b;
+    font-size:14px;
+}
+
+@keyframes fadeIn {
+    from {opacity:0;}
+    to {opacity:1;}
+}
+
+@media(max-width:768px){
+    .hero h1 {
+        font-size:28px;
+    }
+}
 </style>
 </head>
+
 <body>
-<div class="container">
-<h1>Phishing Training Simulator</h1>
-<p>This simulator recreates a real-world email inbox environment.</p>
-<p>You will receive hundreds of emails — some legitimate, some malicious.</p>
-<p>Your goal is to interact correctly based on the seriousness of each email.</p>
-<p>Click links, download attachments, reply, or report phishing — but choose wisely.</p>
-<p>Correct decisions increase your score. Mistakes reduce it.</p>
-<br>
-<button onclick="location.href='/inbox'">Start Simulation</button>
+
+<div class="hero">
+    <h1>Inbox Phishing Simulation Platform</h1>
+    <p>
+        Train your mind to detect real-world phishing attacks inside a realistic inbox environment.
+        This behavioral simulation evaluates your decisions and strengthens your cybersecurity awareness.
+    </p>
+    
 </div>
+
+<div class="features">
+    <div class="card">
+        <h3>🔍 Realistic Inbox</h3>
+        <p>Experience phishing attacks inside a dynamic email environment similar to modern platforms.</p>
+    </div>
+    <div class="card">
+        <h3>🛡 Behavioral Scoring</h3>
+        <p>Gain points for safe actions and lose points for risky interactions.</p>
+    </div>
+    <div class="card">
+        <h3>⚡ Adaptive Difficulty</h3>
+        <p>The system increases complexity as your detection skills improve.</p>
+    </div>
+    <div class="card">
+        <h3>🎯 Daily Challenge</h3>
+        <p>Test yourself with limited-time simulation scenarios.</p>
+    </div>
+</div>
+
+<div class="steps">
+    <h2>How It Works</h2>
+    <div class="step">1: Open simulated emails</div>
+    <div class="step">2: Analyze sender, domain & urgency</div>
+    <div class="step">3: Choose to Report, Reply or Ignore</div>
+    <div class="step">4: If the email and links appear legitimate, you may reply or click to proceed. </div>
+    <div class="step">5: Receive instant feedback & score</div>
+</div>
+
+<div class="hero">
+    <button class="start-btn" onclick="location.href='/inbox'">
+        Start Simulation
+    </button>
+</div>
+
+<div class="footer">
+    Developed as a Behavioral Inbox Phishing Training Platform
+</div>
+
 </body>
 </html>
