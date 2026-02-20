@@ -394,12 +394,16 @@ def take_action(email_id, action):
                            score_change=score_change,
                            badges=session["badges"])
 @app.route("/reset")
-def reset():
+def reset_training():
+
+    # Reset scoring only
     session["score"] = 50
     session["streak"] = 0
-    session["badges"] = []
     session["trash"] = []
+
+    # Regenerate inbox from database
     session["emails"] = generate_inbox()
+
     return redirect(url_for("inbox"))
 
 @app.route("/admin-delete/<int:email_id>")
