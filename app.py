@@ -93,14 +93,30 @@ def fetch_random_email(email_type):
 
 def generate_inbox(count=30):
     emails = []
-    for _ in range(count):
-        if random.random() > 0.5:
-            email = fetch_random_email("Phishing")
-        else:
-            email = fetch_random_email("Safe")
 
-        if email:
-            emails.append(email)
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute("SELECT * FROM emails")
+    rows = c.fetchall()
+    conn.close()
+
+    if not rows:
+        return []
+
+    for _ in range(count):
+        row = random.choice(rows)
+
+        email = {
+            "id": row[0],
+            "type": row[1],
+            "sender": row[2],
+            "subject": row[3],
+            "body": row[4],
+            "attachment": row[5],
+            "severity": row[6]
+        }
+
+        emails.append(email)
 
     random.shuffle(emails)
     return emails
