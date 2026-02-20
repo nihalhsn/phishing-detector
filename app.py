@@ -304,6 +304,46 @@ def admin():
 
     return render_template("admin.html", emails=emails)
 
+# ==============================
+# ADMIN BULK IMPORT
+# ==============================
+
+@app.route("/admin-import", methods=["POST"])
+def admin_import():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+
+    file = request.files.get("file")
+
+    if not file:
+        return "No file uploaded"
+
+    try:
+        data = json.load(file)
+    except Exception as e:
+        return f"Invalid JSON file: {e}"
+
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    for email in data:
+        c.execute("""
+            INSERT INTO emails (type, sender, subject, body, attachment, severity)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            email["type"],
+            email["sender"],
+            email["subject"],
+            email["body"],
+            email.get("attachment"),
+            email["severity"]
+        ))
+
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for("admin"))
+
 @app.route("/admin-delete/<int:email_id>")
 def admin_delete(email_id):
     if not session.get("admin_logged_in"):
